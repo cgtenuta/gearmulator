@@ -4,6 +4,7 @@ project(osTIrusJucePlugin VERSION ${CMAKE_PROJECT_VERSION})
 set(SOURCES
 	skins/TrancyTI/VirusTI_Trancy.rml
 	skins/TrancyTI/VirusTI_Trancy.rcss
+	skins/TrancyTI/VirusTI_Hardware.rml
 	parameterDescriptions_TI.json
 	OsTIrusProcessor.cpp
 	OsTIrusProcessor.h
@@ -22,6 +23,8 @@ SET(ASSETS
 	"tus_settings_dspaudio_OsTIrus.rcss"
 )
 
+# HardwareTI shares the TrancyTI artwork folder and only has a different root rml (the first skin is the default)
+addSkin("OsTIrus" "HardwareTI" "skins/TrancyTI" "VirusTI_Hardware.rml")
 addSkin("OsTIrus" "TrancyTI" "skins/TrancyTI" "VirusTI_Trancy.rml")
 
 buildSkinHeader()
