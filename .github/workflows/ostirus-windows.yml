@@ -39,9 +39,9 @@ jobs:
     - name: Collect VST3
       shell: pwsh
       run: |
-        $found = Get-ChildItem -Path build -Recurse -Directory -Filter *.vst3 | Where-Object { $_.Name -match 'OsTIrus' } | Select-Object -First 1
-        if (-not $found) { $found = Get-ChildItem -Path build -Recurse -Directory -Filter *.vst3 | Select-Object -First 1 }
-        if (-not $found) { Get-ChildItem -Path build -Recurse -Filter *.vst3 | ForEach-Object { $_.FullName }; throw "no .vst3 bundle folder found" }
+        $found = Get-ChildItem -Path . -Recurse -Directory -Filter *.vst3 | Where-Object { $_.Name -match 'OsTIrus' } | Select-Object -First 1
+        if (-not $found) { $found = Get-ChildItem -Path . -Recurse -Directory -Filter *.vst3 | Select-Object -First 1 }
+        if (-not $found) { Get-ChildItem -Path bin,build -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -match 'vst3|OsTIrus' } | Select-Object -First 40 | ForEach-Object { $_.FullName }; throw "no .vst3 bundle folder found" }
         Write-Host "Using $($found.FullName)"
         New-Item -ItemType Directory -Force out | Out-Null
         Copy-Item $found.FullName out\OsTIrus.vst3 -Recurse -Force
