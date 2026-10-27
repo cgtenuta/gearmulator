@@ -39,8 +39,13 @@ jobs:
     - name: Collect VST3
       shell: pwsh
       run: |
+        $found = Get-ChildItem -Path build -Recurse -Directory -Filter *.vst3 | Where-Object { $_.Name -match 'OsTIrus' } | Select-Object -First 1
+        if (-not $found) { $found = Get-ChildItem -Path build -Recurse -Directory -Filter *.vst3 | Select-Object -First 1 }
+        if (-not $found) { Get-ChildItem -Path build -Recurse -Filter *.vst3 | ForEach-Object { $_.FullName }; throw "no .vst3 bundle folder found" }
+        Write-Host "Using $($found.FullName)"
         New-Item -ItemType Directory -Force out | Out-Null
-        Get-ChildItem -Path build -Recurse -Directory -Filter *.vst3 | ForEach-Object { Copy-Item $_.FullName out -Recurse -Force; $_.FullName }
+        Copy-Item $found.FullName out\OsTIrus.vst3 -Recurse -Force
+        Get-ChildItem out -Recurse | Select-Object -First 20 | ForEach-Object { $_.FullName }
 
     - name: Installer (Inno Setup)
       shell: pwsh
